@@ -91,31 +91,44 @@ public class ArbolBinarioBusqueda<E extends Comparable<E>> extends Arbol<E> {
 	@Override
 	public boolean contiene(E unValor) {
 		// TODO 1.a
-		return false;
+		return unValor.compareTo(this.valor)==0 || this.derecho().contiene(unValor) || this.izquierdo.contiene(unValor);
 	}
 
 	@Override
 	public int profundidad() {
 		// TODO 1.b
-		return 0;
+		return 1 + Math.max(this.derecho().profundidad(), this.izquierdo().profundidad());
 	}
 
 	@Override
 	public int cuentaNodosDeNivel(int nivel) {
 		// TODO 1.c
-		return 0;
+		return nivel==0 ? 1: this.derecho().cuentaNodosDeNivel(nivel-1) + this.izquierdo().cuentaNodosDeNivel(nivel-1);
 	}
 
 	@Override
 	public boolean esCompleto() {
 		// TODO 1.d
+		if(this.derecho().esVacio() && this.izquierdo().esVacio())
+			return true;
+		else if(this.izquierdo().profundidad()==this.derecho().profundidad()) {
+			return this.izquierdo().esLleno() && this.derecho.esCompleto();
+		}
+		else if(this.izquierdo().profundidad()==this.derecho().profundidad()+1) {
+			return this.izquierdo().esCompleto() && (this.derecho().esLleno() || this.derecho().esVacio());
+		}
 		return false;
 	}
 
 	@Override
 	public boolean esLleno() {
 		// TODO 1.e
-		return false;
+		if(this.derecho().esVacio() && this.izquierdo().esVacio())
+			return true;
+		else if(this.derecho().profundidad() != this.izquierdo().profundidad()){
+			return false;
+		}
+		return this.derecho().esLleno() && this.izquierdo().esLleno();
 	}
 
 }
